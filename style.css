@@ -1,1 +1,136 @@
+:root{
+  --bg:#0b0c0f; --panel:#141821; --text:#e8eaf0; --muted:#a6adbb;
+  --accent:#6aa5ff; --accent-2:#9e7bff; --good:#68e39f; --danger:#ff7b7b; --radius:16px;
+}
 
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background: radial-gradient(1200px 600px at 10% 0%, #0f1320 0%, #0b0c0f 60%), var(--bg);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  overflow:hidden;
+}
+
+/* Screens */
+.screen{
+  position:fixed; inset:0; display:grid; place-content:center; text-align:center;
+  padding:24px; background:linear-gradient(180deg, #151a25 0%, #11141b 100%);
+}
+.overlay{
+  background: #000000b3; /* translucent overlay on top of game */
+  backdrop-filter: blur(2px);
+}
+
+.title{
+  font-size: clamp(2rem, 6vw, 4rem);
+  margin: 0 0 14px 0; letter-spacing:.5px; font-weight:900;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text; background-clip:text; color: transparent;
+  text-shadow: 0 0 20px #0008;
+}
+.title.small{ font-size: clamp(1.6rem, 5vw, 3rem); }
+.subtitle{ color:var(--muted); margin: 6px 0 16px 0; }
+
+.btn{
+  height:56px; padding:0 22px; border-radius:999px; border:1px solid #2a3140;
+  background:linear-gradient(180deg,#1c2230 0%, #121723 100%); color:var(--text);
+  cursor:pointer; font-weight:700; letter-spacing:.3px; font-size:1rem;
+  transition: transform .08s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:hover{ transform: translateY(-1px); border-color:#3a4356 }
+.btn:active{ transform: translateY(0) }
+.btn.primary{ background:linear-gradient(180deg,#2b3550 0%, #1a2134 100%); }
+
+.hidden{ display:none !important; }
+
+/* HUD */
+.hud{
+  position:fixed; inset:0 0 auto 0; pointer-events:none;
+}
+.hud .score, .hud .misses{
+  position:absolute; top:12px; padding:8px 12px; border-radius:12px;
+  background:#0f1420d0; border:1px solid #263041; font-weight:700; box-shadow:0 8px 30px #0006;
+}
+.hud .score{ left:12px; }
+.hud .misses{ right:12px; }
+
+/* Game Area */
+.game{
+  position:fixed; inset:0;
+  overflow:hidden;
+  background:
+    radial-gradient(#0c0f18 1px, transparent 1px) 0 0/24px 24px,
+    linear-gradient(180deg, #0a0e17 0%, #0b0c0f 100%);
+}
+
+/* Bug base */
+.bug{
+  position:absolute;
+  bottom:-80px; /* start slightly below the view */
+  width: clamp(36px, 5vw, 56px);
+  aspect-ratio: 1;
+  cursor: crosshair;
+  transform: translateX(-50%) scale(1);
+  border-radius: 50%;
+  border:1px solid #2a3140;
+  box-shadow: 0 6px 18px #0008;
+  transition: transform .05s ease;
+}
+.bug::before, .bug::after{ content:""; position:absolute; inset:auto; pointer-events:none; }
+
+/* Regular bug look */
+.bug.regular{
+  background:
+    radial-gradient(circle at 40% 40%, #1b263a 0 35%, #0f1726 55%, #0a0f1b 70%),
+    radial-gradient(circle at 60% 60%, #10182a 0 35%, #0b1220 60%, #070b12 80%);
+}
+.bug.regular::before{ /* legs */
+  width:120%; height:40%; left:-10%; bottom:15%;
+  background: linear-gradient(#39455f, #1f2940); filter: blur(1px);
+  clip-path: polygon(0 50%, 20% 45%, 40% 55%, 60% 45%, 80% 55%, 100% 50%, 100% 70%, 0 70%);
+  opacity:.4;
+}
+.bug.regular::after{ /* antennae */
+  width: 60%; height: 60%; left: 20%; top: -25%;
+  background: radial-gradient(#36425a, transparent 60%);
+  clip-path: polygon(40% 0, 45% 20%, 50% 10%, 55% 20%, 60% 0, 60% 40%, 40% 40%);
+  opacity:.5;
+}
+
+/* Fast bug look (smaller + brighter) */
+.bug.fast{
+  width: clamp(28px, 4vw, 44px);
+  background:
+    radial-gradient(circle at 40% 40%, #243c62 0 35%, #152748 55%, #0a1226 70%),
+    radial-gradient(circle at 60% 60%, #1a3668 0 35%, #102b57 60%, #0b1d3b 80%);
+  border-color:#3558a8;
+  box-shadow: 0 6px 20px #0a4cff55;
+}
+.bug.fast::before{
+  width:120%; height:40%; left:-10%; bottom:15%;
+  background: linear-gradient(#456bb7, #28407a); filter: blur(1px);
+  clip-path: polygon(0 50%, 20% 45%, 40% 55%, 60% 45%, 80% 55%, 100% 50%, 100% 70%, 0 70%);
+  opacity:.45;
+}
+.bug.fast::after{
+  width: 60%; height: 60%; left: 20%; top: -25%;
+  background: radial-gradient(#4b70c9, transparent 60%);
+  clip-path: polygon(40% 0, 45% 20%, 50% 10%, 55% 20%, 60% 0, 60% 40%, 40% 40%);
+  opacity:.6;
+}
+
+/* Rise animation (duration set inline per bug) */
+@keyframes rise {
+  from { transform: translate(-50%, 0) }
+  to   { transform: translate(-50%, -120vh) }
+}
+
+/* Squashed effect */
+.bug.squashed{
+  transform: translateX(-50%) scale(0.2) rotate(12deg);
+  filter: saturate(0.6) brightness(0.8);
+  opacity: 0.4;
+}
