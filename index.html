@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The EXTERMINATOR</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="startScreen" class="screen">
+    <h1 class="title">The EXTERMINATOR</h1>
+    <button id="playBtn" class="btn primary">Play</button>
+  </div>
 
+  <!-- HUD -->
+  <div id="hud" class="hud hidden">
+    <div class="score">Score: <span id="scoreVal">0</span></div>
+    <div class="misses">Misses: <span id="missVal">0</span>/10</div>
+  </div>
+
+  <!-- Game Area -->
+  <div id="game" class="game hidden" aria-label="Bug catching game area"></div>
+
+  <!-- Win Screen -->
+  <div id="winScreen" class="screen overlay hidden">
+    <h2 class="title small">Congrats, you win!</h2>
+    <p class="subtitle">Final Score: <span id="finalScore">0</span></p>
+    <button id="againBtn" class="btn">Play Again</button>
+  </div>
+
+  <!-- Lose Screen -->
+  <div id="loseScreen" class="screen overlay hidden">
+    <h2 class="title small">You Lose</h2>
+    <p class="subtitle">Missed too many bugs. Final Score: <span id="finalScoreLose">0</span></p>
+    <button id="tryBtn" class="btn">Try Again</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
