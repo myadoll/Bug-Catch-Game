@@ -19,7 +19,7 @@ body{
   padding:24px; background:linear-gradient(180deg, #151a25 0%, #11141b 100%);
 }
 .overlay{
-  background: #000000b3; /* translucent overlay on top of game */
+  background: #000000b3;
   backdrop-filter: blur(2px);
 }
 
@@ -69,58 +69,33 @@ body{
 /* Bug base */
 .bug{
   position:absolute;
-  bottom:-80px; /* start slightly below the view */
-  width: clamp(36px, 5vw, 56px);
+  bottom:-100px; /* start slightly below the view */
+  /* Bigger hit area for easy clicks */
+  width: clamp(64px, 6.2vw, 84px);
   aspect-ratio: 1;
   cursor: crosshair;
-  transform: translateX(-50%) scale(1);
+  transform: translateX(-50%);
   border-radius: 50%;
-  border:1px solid #2a3140;
-  box-shadow: 0 6px 18px #0008;
-  transition: transform .05s ease;
+  /* invisible hitbox highlight */
+  background: transparent;
+  /* subtle hover feedback for desktop */
+  transition: transform .05s ease, filter .1s ease;
+  touch-action: manipulation;
 }
-.bug::before, .bug::after{ content:""; position:absolute; inset:auto; pointer-events:none; }
+.bug:hover{ filter: drop-shadow(0 0 10px #ffffff33); }
+.bug:active{ transform: translateX(-50%) scale(0.96); }
 
-/* Regular bug look */
-.bug.regular{
-  background:
-    radial-gradient(circle at 40% 40%, #1b263a 0 35%, #0f1726 55%, #0a0f1b 70%),
-    radial-gradient(circle at 60% 60%, #10182a 0 35%, #0b1220 60%, #070b12 80%);
-}
-.bug.regular::before{ /* legs */
-  width:120%; height:40%; left:-10%; bottom:15%;
-  background: linear-gradient(#39455f, #1f2940); filter: blur(1px);
-  clip-path: polygon(0 50%, 20% 45%, 40% 55%, 60% 45%, 80% 55%, 100% 50%, 100% 70%, 0 70%);
-  opacity:.4;
-}
-.bug.regular::after{ /* antennae */
-  width: 60%; height: 60%; left: 20%; top: -25%;
-  background: radial-gradient(#36425a, transparent 60%);
-  clip-path: polygon(40% 0, 45% 20%, 50% 10%, 55% 20%, 60% 0, 60% 40%, 40% 40%);
-  opacity:.5;
+/* the visible sprite (emoji) inside the hitbox */
+.bug .sprite{
+  position:absolute; inset:0; display:grid; place-items:center;
+  font-size: clamp(36px, 4.6vw, 60px);
+  user-select:none; -webkit-user-select:none; pointer-events:none;
+  transform: translateY(6px); /* sits slightly lower so it feels centered */
+  text-shadow: 0 4px 10px #0006;
 }
 
-/* Fast bug look (smaller + brighter) */
-.bug.fast{
-  width: clamp(28px, 4vw, 44px);
-  background:
-    radial-gradient(circle at 40% 40%, #243c62 0 35%, #152748 55%, #0a1226 70%),
-    radial-gradient(circle at 60% 60%, #1a3668 0 35%, #102b57 60%, #0b1d3b 80%);
-  border-color:#3558a8;
-  box-shadow: 0 6px 20px #0a4cff55;
-}
-.bug.fast::before{
-  width:120%; height:40%; left:-10%; bottom:15%;
-  background: linear-gradient(#456bb7, #28407a); filter: blur(1px);
-  clip-path: polygon(0 50%, 20% 45%, 40% 55%, 60% 45%, 80% 55%, 100% 50%, 100% 70%, 0 70%);
-  opacity:.45;
-}
-.bug.fast::after{
-  width: 60%; height: 60%; left: 20%; top: -25%;
-  background: radial-gradient(#4b70c9, transparent 60%);
-  clip-path: polygon(40% 0, 45% 20%, 50% 10%, 55% 20%, 60% 0, 60% 40%, 40% 40%);
-  opacity:.6;
-}
+/* Type sizing tweaks */
+.bug.fast .sprite{ font-size: clamp(34px, 4.2vw, 54px); } /* a bit smaller */
 
 /* Rise animation (duration set inline per bug) */
 @keyframes rise {
@@ -130,7 +105,7 @@ body{
 
 /* Squashed effect */
 .bug.squashed{
-  transform: translateX(-50%) scale(0.2) rotate(12deg);
-  filter: saturate(0.6) brightness(0.8);
-  opacity: 0.4;
+  transform: translateX(-50%) scale(0.75);
+  filter: grayscale(0.3) brightness(0.8);
+  opacity: 0.6;
 }
